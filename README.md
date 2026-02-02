@@ -79,42 +79,40 @@ streamlit run app.py
 ```
 Truy cập vào đường dẫn http://localhost:8501 trên trình duyệt.
 
-🎛️ Hướng dẫn cấu hình (Configuration)
-Bạn có thể thay đổi hành vi của hệ thống Auto-scaling bằng cách chỉnh sửa file autoscale_config.yaml:
+## 🎛️ Hướng dẫn cấu hình (Configuration)
 
-YAML
+Bạn có thể thay đổi hành vi của hệ thống Auto-scaling bằng cách chỉnh sửa file `autoscale_config.yaml`:
+
+```yaml
 global_parameters:
   TARGET_UTIL: 0.6          # Mức tải mục tiêu (60%). 40% còn lại là vùng đệm an toàn.
   SCALE_IN_COOLDOWN: 15     # Thời gian chờ trước khi tắt server (phút).
   UNIT_COST_PER_HOUR: 0.5   # Đơn giá thuê server ($/giờ).
-Lưu ý: Sau khi sửa file config, hãy Refresh lại trang web để cập nhật.
+```
 
-📊 Giải thích kỹ thuật (Methodology)
-Tại sao lại thừa tài nguyên (Vùng xanh)?
+## 📊 Giải thích kỹ thuật (Methodology)
 
-Chúng tôi áp dụng nguyên lý "Intended Waste for Reliability".
+### 1. Tại sao lại thừa tài nguyên (Vùng xanh)?
 
-Chúng tôi đặt Target Utilization = 60%.
+Chúng tôi áp dụng nguyên lý **"Intended Waste for Reliability"**.
 
-Nghĩa là hệ thống luôn dư thừa 40% năng lực xử lý.
+* Chúng tôi đặt `Target Utilization = 60%`.
+* Nghĩa là hệ thống luôn dư thừa **40% năng lực xử lý**.
+* **Mục đích:** Để hấp thụ các đợt tấn công bất ngờ (Spike) ngay lập tức trong khi chờ server mới khởi động (thường mất 1-2 phút).
 
-Mục đích: Để hấp thụ các đợt tấn công bất ngờ (Spike) ngay lập tức trong khi chờ server mới khởi động (thường mất 1-2 phút).
 
-Đánh giá độ chính xác (MAPE)
 
-Mô hình đạt MAPE (Mean Absolute Percentage Error) ở mức ~5.xx%.
+### 2. Đánh giá độ chính xác (MAPE)
 
-< 10%: Rất tốt (Highly Accurate).
+Mô hình đạt **MAPE (Mean Absolute Percentage Error)** ở mức **~5.xx%**.
 
-10-20%: Tốt (Good).
-
-> 50%: Không nên sử dụng.
+* **< 10%:** Rất tốt (Highly Accurate).
+* **10-20%:** Tốt (Good).
+* **> 50%:** Không nên sử dụng.
 
 👥 Tác giả (Authors)
 Team: Runtime Error
 
 Cuộc thi: DataFlow 2026
-
-Liên hệ: [Thêm thông tin liên hệ của bạn tại đây]
 
 Built with ❤️ using Streamlit & Python.
