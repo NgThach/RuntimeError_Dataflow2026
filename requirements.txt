@@ -1,0 +1,4 @@
+pandas==3.0.0
+plotly==6.5.2
+PyYAML==6.0.3
+streamlit==1.53.1

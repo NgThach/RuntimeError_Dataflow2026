@@ -1,0 +1,53 @@
+{
+  "system": "autoscaling_simulation",
+  "forecast_models": {
+    "type": "LightGBM",
+    "targets": [
+      "request_count",
+      "total_bytes"
+    ],
+    "timeframes": [
+      "1m",
+      "5m",
+      "15m"
+    ]
+  },
+  "autoscale_models": {
+    "request_based": {
+      "capacity_per_instance": 150,
+      "logic": "EMA + threshold + cooldown",
+      "uses": [
+        "req_1m_pred",
+        "req_5m_pred",
+        "req_15m_pred"
+      ]
+    },
+    "bytes_based": {
+      "capacity_per_instance": 1500000.0,
+      "logic": "heavy EMA + hysteresis + spike-safe scale-in",
+      "uses": [
+        "byte_1m_pred",
+        "byte_5m_pred",
+        "byte_15m_pred"
+      ]
+    },
+    "hybrid": {
+      "primary": "request",
+      "secondary": "bytes",
+      "logic": "request-driven scaling with byte utilization amplification"
+    }
+  },
+  "global_parameters": {
+    "MIN_INSTANCES": 1,
+    "MAX_INSTANCES": 40,
+    "REQ_PER_INSTANCE": 150,
+    "BYTE_PER_INSTANCE": 1500000.0,
+    "TARGET_UTIL": 0.6,
+    "SCALE_OUT_THRESHOLD": 0.75,
+    "SCALE_IN_THRESHOLD": 0.25,
+    "SCALE_OUT_COOLDOWN": 5,
+    "SCALE_IN_COOLDOWN": 15,
+    "SPIKE_BONUS": 3,
+    "UNIT_COST_PER_HOUR": 0.5
+  }
+}
